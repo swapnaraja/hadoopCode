@@ -2,7 +2,7 @@
 ##Pattern Description
 
 A composite join is a specialized type of join operation that can be performed on the
-map-side with many very large formatted inputs.
+map-side with many very large formatted inputs using compositeinputformat.
 
 ##Intent
 
