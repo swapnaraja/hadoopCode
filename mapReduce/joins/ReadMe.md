@@ -1,4 +1,6 @@
 In Mapreduce we can do joins in the following ways.
+----------------------------------------------------
+
 Reduce side join this is known as auto join the default join in hive
 Des: By using multiinputs  if we have two tables to join lets say emp, dept
 we should have like this in the driver code
