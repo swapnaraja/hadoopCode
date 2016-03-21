@@ -17,7 +17,7 @@ Configuration conf = new Configuration();
 conf.set("mapreduce.input.keyvaluelinerecordreader.key.value.separator", ",");
 Job job = Job.getInstance(conf);
 job.setJarByClass(MapsideJoinDriver.class);
-job.setMapperClass(empdeptmapper.class);
+job.setMapperClass(MapsideJoinMapper.class);
 job.setInputFormatClass(CompositeInputFormat.class);
 String expr = CompositeInputFormat.compose("inner",KeyValueTextInputFormat.class , new Path(args[0]),new Path(args[1]));
 //String expr = CompositeInputFormat.compose("outer",KeyValueTextInputFormat.class , new Path(args[0]),new Path(args[1]));
