@@ -22,8 +22,12 @@ job.addCacheFile(new URI("dept.txt"));
 Cons: one table must be small typically the default block size
 
 SortedMap join When two tables are large will use this by using compositeinputformat
+if both input datasets can be joined by the join key and both input datasets are sorted in the same order, by the join key.
+ 
 Approach: Using Composite InputFormat, KeyValueTextInputFormat
 CompositeInputFormat.compose("inner",KeyValueTextInputFormat.class , new Path(args[0]),new Path(args[1]));
+the input format must be set to CompositeInputFormat.class, and 
+- the key mapred.join.expr must have a value that is a valid join specification. 
 
 cons: All the files need to be sorted on the join key
 
