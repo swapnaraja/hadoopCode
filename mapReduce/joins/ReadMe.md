@@ -1,7 +1,7 @@
 
 1. Reduce side join  This is known as auto join the default join in hive.
-    Approach: By using MultipleInputs in MapReduce API.
-    I have two tables to join (Employee,Department) below lines are from drivers     class
+Approach: By using MultipleInputs in MapReduce API.
+I have two tables to join (Employee,Department) below lines are from drivers     class
 Join operation will be performed on the reducer side.
    MultipleInputs.addInputPath(job, new Path(args[0]),
 				TextInputFormat.class, EmployeeJoinMapper.class);
