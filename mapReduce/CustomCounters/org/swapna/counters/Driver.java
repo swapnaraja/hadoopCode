@@ -1,3 +1,5 @@
+//Counters are useful for debugging the hadoop code. there are many builtin counters 
+//if we want can add user defined counters
 package org.swapna.counters;
 
 import java.io.IOException;
