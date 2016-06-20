@@ -1,0 +1,13 @@
+ select * from
+ (
+     select i.actid,i.transaction_time, i.ficoscore, i.cutoff_dt,
+     rank() over (order by i.cutoff_dt desc) as o1_rank from
+      (
+            select * from 
+           (
+                  select actid,transaction_time,ficoscore,cutoff_dt,
+                  rank() over (order by transaction_time desc) as rank
+                    from fico1
+             )f 
+        where rank=1) 
+   i)   f2 where o1_rank=1;
