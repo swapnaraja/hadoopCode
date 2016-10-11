@@ -1,0 +1,100 @@
+oozie_runner.sh
+---------------
+#!/bin/ksh   // This is mandatory for cron jobs
+export oozie_url=http://<<hostip>>:11000/oozie/
+run_dt=`date +%Y-%m-%d`
+file_run_dt=`date +%Y%j`
+
+/opt/mapr/oozie/bin/oozie job -oozie $oozie_url -config path_job.propertie -run -DH_RUN_DT=$run_dt -DH file_run_dt=$file_run_dt
+
+job.properties
+---------------
+nameNode=maprfs:///
+jobTracker=maprfs:///
+
+queueName=oozie_jobs
+user.name=
+
+applicationPath=
+oozie.wf.application.patj=${applicationPat}
+oozie.use.system.libpath=true;
+oozie.wf.validate.ForkJoin=false
+oozie.wf.rerun.failNodes=true
+workflow.xml
+------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow-app xmlns="uri:oozie:workflow:0.5" name="">
+<global>
+ <job-tracker>${jobtracker}</job-tracker>
+ <name-node>${nameNode}</name-node>
+ <job-xml>${hive_config}</job-xml>
+ <configuration>
+  <property>
+     <name>mapred.job.queue.name</name>
+     <value>$queueName</value>
+   </property>
+  <property>
+    <name>mapred.reduce.tasks</name>
+    <value>-1</value>
+   </property>
+   <property>
+    <name>mapreduce.job.reduces</name>
+    <value>-1</value>
+    </property>
+</configuration>
+</global>
+
+<start to="start-email"/>
+<action name="start-email">
+<email xmlns="uri:oozie:email-action:0.1">
+  <to>  </to>
+  <body> The wf ${wf:id()} is started </body>
+ </email>
+ <ok to="hive_action"/>
+ <error to="hive_action"/>
+ </action>
+ 
+ <!-- hive action -->
+ 
+ <action name="hive_action">
+  <shell xmlns="uri:oozie:shell-action:0.1">
+    <job-tracker>${jobTracker}</job-tracker>
+    <name-node>${nameNode}</name-node>
+    <configuration>
+ <property>
+     <name>mapred.job.queue.name</name>
+     <value>$queueName</value>
+   </property>
+  <exec>scriptname.sh</exec>
+  <file>${shell_base}/scriptname.sh#scriptname.sh</file>
+  <file>${hive_base}/scriptname.sql#scriptname.sql</file>
+  </shell>
+  <ok to="successEmail"/>
+  <error to="failureEmail"/>
+  </action>
+  <action name="successEmail">
+  <email xmlns="uri:oozie:email-action:0.1">
+  <to> </to>
+  <subject> email notification for ${wf:id()}</subject>
+  <body>The wf is success</body>
+  </email>
+  <ok to="end"/>
+  <error to ="end"/>
+  </action>
+  
+  <action name="failureEmail">
+  <body> The wf ${wf:id()}  has failed ${wf:errorCode(wf:lastErrorNode())} ${wf:errorMessage(wf:lastErrorNode())} </body>
+  <ok to="wf_error"/>
+  <error to="wf_error"/>
+  </action>
+  
+ <kill name="wf_error">
+ <message> failedd </message
+ </kill>
+ 
+ <end name"end"/>
+ </workflow-app>
+ 
+ sample script for hive_action sh
+ -----------------------------------
+ hive --hivevar var1=value1 -f name.sql
