@@ -1,1 +1,15 @@
-
+ Get the property value from "oozie.action.output.properties"
+ If we have Java API which writes property to the above
+ 
+ we can retrieve as below
+ 
+ <action name ="test_java_api">
+ 
+ <capture-output/>
+ </action>
+ In email action we can get the above property like
+ 
+ ${wf:actionData('test_java_api')['my_output']
+ 
+ 
+ Refer this http://blog.cloudera.com/blog/2013/03/how-to-use-oozie-shell-and-java-actions/
