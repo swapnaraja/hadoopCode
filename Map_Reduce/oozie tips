@@ -8,9 +8,14 @@
  <capture-output/>
  </action>
  In email action we can get the above property like
- 
- ${wf:actionData('test_java_api')['my_output']
- 
+ <action name="failure_email">
+ <email xmlns="uri:oozie:email-action:0.1">
+ <to></to>
+ <body> The ${wf:actionData('test_java_api')['my_output'] </body>
+ </email>
+ <ok to="wf_error"/>
+ <error to="wf_error"/>
+ </action>
  
  Refer this http://blog.cloudera.com/blog/2013/03/how-to-use-oozie-shell-and-java-actions/
 https://oozie.apache.org/docs/3.2.0-incubating/WorkflowFunctionalSpec.html
