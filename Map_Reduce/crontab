@@ -1,0 +1,9 @@
+list
+------ crontab -l
+edit
+------
+crontab -e
+11 11 * * * file_nae.sh > /logs/`date+\%Y-\%m-\%d`_crn.log 2>&1
+// the abve line writes the log file to the path give
+http://www.adminschoice.com/crontab-quick-reference
+https://help.ubuntu.com/community/CronHowto
