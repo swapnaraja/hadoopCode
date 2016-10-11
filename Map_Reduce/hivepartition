@@ -8,3 +8,11 @@ set hive.exec.dynamic.partition.mode=nonstrict;
 insert overwrite table emp_rundt partition(run_dt,report_dt)
 --select id,name,from_unixtime(unix_timestamp(),'yyyy-MM-dd') ds,report_dt from emp_partition distribute by ds,report_dt;
 select *,from_unixtime(unix_timestamp(),'yyyy-MM-dd') ds from emp_partition distribute by ds,report_dt;
+
+
+
+
+
+//when we want to give static parititon
+insert overwrite table emp_rundt partition(run_dt='2016-09-09')
+select * from src_table;
