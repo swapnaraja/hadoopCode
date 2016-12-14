@@ -13,7 +13,7 @@ nameNode=maprfs:///
 jobTracker=maprfs:///
 
 queueName=oozie_jobs
-user.name=
+user.name=//the logged in user name
 
 applicationPath=
 oozie.wf.application.patj=${applicationPat}
@@ -50,9 +50,16 @@ workflow.xml
   <to>  </to>
   <body> The wf ${wf:id()} is started </body>
  </email>
- <ok to="hive_action"/>
- <error to="hive_action"/>
+ <ok to="fork1"/>
+ <error to="fork1"/>
  </action>
+ 
+ <fork name="fork1">
+   <path start="hive_action"/>
+   <path start="hive_action1"/>
+ </fork>
+ 
+ <join name="join1" to="successEmail"/>
  
  <!-- hive action -->
  
@@ -69,9 +76,28 @@ workflow.xml
   <file>${shell_base}/scriptname.sh#scriptname.sh</file>
   <file>${hive_base}/scriptname.sql#scriptname.sql</file>
   </shell>
-  <ok to="successEmail"/>
+  <ok to="join1"/>
   <error to="failureEmail"/>
   </action>
+  
+  <action name="hive_action1">
+  <shell xmlns="uri:oozie:shell-action:0.1">
+    <job-tracker>${jobTracker}</job-tracker>
+    <name-node>${nameNode}</name-node>
+    <configuration>
+ <property>
+     <name>mapred.job.queue.name</name>
+     <value>$queueName</value>
+   </property>
+  <exec>scriptname.sh</exec>
+  <file>${shell_base}/scriptname.sh#scriptname.sh</file>
+  <file>${hive_base}/scriptname.sql#scriptname.sql</file>
+  </shell>
+  <ok to="join1"/>
+  <error to="failureEmail"/>
+  </action>
+  
+  
   <action name="successEmail">
   <email xmlns="uri:oozie:email-action:0.1">
   <to> </to>
