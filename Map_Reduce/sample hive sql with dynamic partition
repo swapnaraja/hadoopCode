@@ -1,0 +1,23 @@
+ex: we have a table called emp which has
+id,name,mailing_address,phone
+When we want to create a table with few values and partition the data with current date like
+id,name,run_dt follow the below steps
+# create table as partitioned table
+create table emp_new(id bigint comment 'this is id',name string) partitioned by (run_dt string);
+
+sample.sql
+use <db>;
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set hivevar:run_dt=FROM_UNIXTIME(UNIX_TIMESTAMP(),'yyyy-MM-dd');
+insert overwrite table emp_new partition (run_dt)
+select *,${run_dt} as run_dt from emp;
+//results
+// drop the partition 
+//assign the value of rundates delete 4 days before 
+set hivevar:rundates=datesub(FROM_UNIXTIME(UNIX_TIMESTAMP(),'yyyy-MM-dd'),4); //this doesnt work instead need to pass this variable from shell 
+sample.sh
+
+hive --hiveconf rundates=$(date --date="4 days ago" +"%Y-%m-%d") -f sample.sql
+alter table emp_new drop if exists partition (run_dt='${hiveconf:rundates}');
+
