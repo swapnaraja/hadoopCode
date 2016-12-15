@@ -1,0 +1,3 @@
+create table new_emp as 
+select * from (
+select *,row_number() over (partition by id order by cast(updttm as date desc)) as rank from emp) a where rank=1;
