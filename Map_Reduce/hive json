@@ -1,0 +1,4 @@
+sample json file
+add jar /home/ec2-user/hive-json-serde.jar;
+CREATE TABLE IF NOT EXISTS my_json_tbl (username string,tweet string,timestamp int)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.JsonSerde';
