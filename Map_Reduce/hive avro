@@ -66,3 +66,8 @@ LOCATION '/user/ec2-user/twitter_external'
 TBLPROPERTIES ('avro.schema.url'='hdfs://master:8020/user/ec2-user/twitter.avsc');    
  
  
+//can load any type of file by following the steps
+create temp table (id int,name string)
+load data local inpath '.csv or .json' into table temp
+load the file
+create avro table like above and insert the data from temp
