@@ -1,11 +1,18 @@
 wget http://central.maven.org/maven2/org/apache/avro/avro-tools/1.7.7/avro-tools-1.7.7.jar
  to verify 
  java -jar avro-tools-1.7.7.jar
+ 
  java -jar avro-tools-1.7.7.jar fromtext emp emp_avro
  
  // extract jar in unix
  sudo unzip -d /home/ec2-user/hiveserde  hive-serde.jar 
+ //extract the gz
+ gunzip name.tar.gz
+ // extract the tar
+ tar -xvf name.tar
  
+ //create tar
+ tar -cvf src dest
  
  //twitter.avsc
  
