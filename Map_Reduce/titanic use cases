@@ -31,3 +31,10 @@ create table titanic(id int,name string,pclass string,age int,sex string,survive
 tblproperties("skip.header.line.count"="1");
 
 select name from titanic limit 2; 
+
+
+//partitioned table on pclss
+   set hive.exec.dynamic.partition=true;
+   set hive.exec.dynamic.partition.mode=nonstrict;
+insert into titanic_partitioned partition(pclass) select id,name,age,sex,survived_st,sex_code,pclass from titanic;
+show partitions titanic_partitioned;
