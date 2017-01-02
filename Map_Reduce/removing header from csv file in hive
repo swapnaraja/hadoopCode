@@ -1,0 +1,7 @@
+create table emp_new(id int,name string,sal double,dept array<String>,address struct<street:string,city:string,state string,zip:int>,
+deductions map<string:double>
+tblproperties ("skip.header.line.count"="1")
+row format delimited fields terminated by '^A'
+collection items terminated by  '^B'
+map items terminated by '^c';
+
