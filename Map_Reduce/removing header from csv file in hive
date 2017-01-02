@@ -1,7 +1,16 @@
-create table emp_new(id int,name string,sal double,dept array<String>,address struct<street:string,city:string,state string,zip:int>,
-deductions map<string:double>
+create table emp_new(id int,name string,sal double,dept array<String>,address struct<street:string,city:string,state:string,zip:int>,
+deductions map<string,double>)
 tblproperties ("skip.header.line.count"="1")
-row format delimited fields terminated by '^A'
-collection items terminated by  '^B'
-map items terminated by '^c';
+row format delimited fields terminated by '\001'
+collection items terminated by  '\002'
+map keys terminated by '\003';
 
+//sample file
+1^Aswapna^A4000.40^AMarketing^BIT^A179^Bmilpitas^BCA^B95035^Afederal^C0.4^Bst^C0.7
+select explode(dept) from emp_new where id=1; // list the array
+select dept[0] from emp_new where id=1;
+select address.city from emp_new where id=1; //access struct
+select explode(deductions) from emp_new where id=1; or select deductions["federal"] from emp_new where id=1;
+
+create table emp_csv(id int,name string) row format delimited fields terminated by ','
+tblproperties ("skip.header.line.count"="1");
