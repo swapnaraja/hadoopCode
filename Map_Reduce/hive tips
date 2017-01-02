@@ -1,0 +1,4 @@
+list unix directories from hive
+hive>!ls /home/ec2-user/;
+access hdfs commands
+hive>dfs -ls /user/ec2-user/;
