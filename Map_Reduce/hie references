@@ -1,0 +1,7 @@
+https://community.hortonworks.com/articles/22419/hive-on-tez-performance-tuning-determining-reducer.html
+http://stackoverflow.com/questions/20456928/whats-the-factor-that-decides-how-many-map-reduce-jobs-are-used-for-a-query
+http://hortonworks.com/blog/5-ways-make-hive-queries-run-faster/
+http://hortonworks.com/blog/four-step-strategy-incremental-updates-hive/
+http://hadooped.blogspot.com/2013/11/custom-eval-udfs-in-pig-and-hive.html
+http://www.semantikoz.com/blog/hadoop-2-0-beyond-mapreduce-with-yarn-drill-tez/
+https://community.hortonworks.com/questions/5785/why-the-number-of-reducer-determined-by-hadoop-map.html
