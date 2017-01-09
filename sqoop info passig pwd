@@ -1,0 +1,35 @@
+Protecting Your Password
+
+You have two options besides specifying the password on the command line with the --password parameter. The first option is to use the parameter -P that will instruct Sqoop to read the password from standard input. Alternatively, you can save your password in a file and specify the path to this file with the parameter --password-file.
+
+Here’s a Sqoop execution that will read the password from standard input:
+
+sqoop import \
+  --connect jdbc:mysql://mysql.example.com/sqoop \
+  --username sqoop \
+  --table cities \
+  -P
+  
+  Here’s an example of reading the password from a file:
+
+sqoop import \
+  --connect jdbc:mysql://mysql.example.com/sqoop \
+  --username sqoop \
+  --table cities \
+  --password-file my-sqoop-password
+  
+  Discussion
+Let’s take a deeper look at each available method. The first method, using the parameter -P, will instruct Sqoop to prompt the user for the password before any other Sqoop action is taken. An example prompt is shown below:
+
+sqoop import -P --connect ...
+Enter password:
+You can type any characters into the prompt and then press the Enter key once you are done. Sqoop will not echo any characters, preventing someone from reading the password on your screen. All entered characters will be loaded and used as the password (except for the final enter). This method is very secure, as the password is not stored anywhere and is loaded on every Sqoop execution directly from the user. The downside is that it can’t be easily automated with a script.
+
+The second solution, using the parameter --password-file, will load the password from any specified file on your HDFS cluster. In order for this method to be secure, you need to store the file inside your home directory and set the file’s permissions to 400, so no one else can open the file and fetch the password. This method for securing your password can be easily automated with a script and is the recommended option if you need to securely automate your Sqoop workflow. You can use the following shell and Hadoop commands to create and secure your password file:
+
+echo "my-secret-password" > sqoop.password
+hadoop dfs -put sqoop.password /user/$USER/sqoop.password
+hadoop dfs -chown 400 /user/$USER/sqoop.password
+rm sqoop.password
+sqoop import --password-file /user/$USER/sqoop.password ...
+Sqoop will read the entire content of the file including any trailing whitespace characters, which will be considered part of the password. When using a text editor to manually edit the password file, be sure not to introduce extra empty lines at the end of the file.
