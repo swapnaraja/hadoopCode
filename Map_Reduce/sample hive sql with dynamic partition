@@ -15,7 +15,7 @@ select *,${run_dt} as run_dt from emp;
 //results
 // drop the partition 
 //assign the value of rundates delete 4 days before 
-set hivevar:rundates=datesub(FROM_UNIXTIME(UNIX_TIMESTAMP(),'yyyy-MM-dd'),4); //this doesnt work instead need to pass this variable from shell 
+set hivevar:rundates=date_sub(FROM_UNIXTIME(UNIX_TIMESTAMP(),'yyyy-MM-dd'),4); //this doesnt work instead need to pass this variable from shell 
 sample.sh
 
 hive --hiveconf rundates=$(date --date="4 days ago" +"%Y-%m-%d") -f sample.sql
